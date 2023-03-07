@@ -4,6 +4,12 @@
     </x-title-siswa>
     <div class="row">
         <div class="col-lg-4">
+            @if(session('sukses'))
+                <div class="alert alert-success alert-dismissible fade show border-0" role="alert">
+                    <strong>Sukses!</strong> {{ session('sukses') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
             <div class="card">
                 <div class="card-header">
                     <h5 class="mb-0">Tambah Kelas</h5>
@@ -26,9 +32,17 @@
                                     <option value="A">A</option>
                                     <option value="B">B</option>
                                     <option value="C">C</option>
+                                    <option value="D">D</option>
+                                    <option value="E">E</option>
+                                    <option value="F">F</option>
+                                    <option value="G">G</option>
+                                    <option value="H">H</option>
+                                    <option value="I">I</option>
+                                    <option value="J">J</option>
+                                    <option value="K">K</option>
                                 </select>
                             </div>
-                            <button type="submit" class="btn btn-sm btn-primary mt-2">Tambah Kelas</button>
+                            <button type="submit" class="btn btn-sm btn-outline-primary mt-2">Tambah Kelas</button>
 
                         </div>
                     </form>
@@ -55,8 +69,14 @@
                                     <td>{{ $k->tingkat }}</td>
                                     <td>{{ $k->kelas }}</td>
                                     <td class="text-end">
-                                        <a href="{{ route('kelas.destroy', $k->id) }}"><i
-                                                class="las la-trash-alt text-secondary font-16"></i></a>
+                                        <form method="POST" action="{{ route('kelas.destroy', $k->id) }}">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit" class="btn btn-sm btn-link show_confirm"><i
+                                                    class="las la-trash-alt text-danger font-16"></i>
+                                            </button>
+                                        </form>
+
                                     </td>
                                 </tr>
                             @endforeach
@@ -73,4 +93,42 @@
             </div>
         </div>
     </div>
+    @push('css')
+        <link href="{{ asset('') }}assets/plugins/sweet-alert2/sweetalert2.min.css" rel="stylesheet" type="text/css">
+        <link href="{{ asset('') }}assets/plugins/animate/animate.min.css" rel="stylesheet" type="text/css">
+    @endpush
+
+    @push('js')
+
+        <script src="{{ asset('') }}assets/plugins/sweet-alert2/sweetalert2.min.js"></script>
+        <script type="text/javascript">
+            $('.show_confirm').click(function (event) {
+                var form = $(this).closest("form");
+                event.preventDefault();
+                swal.fire({
+                    title: 'Apakah Anda Yakin?',
+                    text: "Ingin Menghapus data Kelas ini!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Tidak, Batal!'
+                })
+                    .then((result) => {
+                        if (result.isConfirmed) {
+                            form.submit();
+                            Swal.fire(
+                                'Hapus!',
+                                'Data Kelas Telah Dihapus!',
+                                'success'
+                            )
+                        }
+                    });
+            });
+
+        </script>
+    @endpush
 </x-app>
+
+

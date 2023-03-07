@@ -25,6 +25,7 @@
     <link href="{{ asset('assets/css/icons.min.css') }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('assets/css/app.min.css') }}" rel="stylesheet" type="text/css"/>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @stack('css')
 </head>
 
 <body id="body" class="light-sidebar">
@@ -361,8 +362,9 @@
 @stack('modals')
 <!-- Javascript  -->
 <!-- App js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="{{ asset('assets/js/app.js') }}"></script>
-
+@stack('js')
 </body>
 <!--end body-->
 </html>

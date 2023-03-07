@@ -24,7 +24,7 @@ class KelasController extends Controller
             'kelas' => 'required',
         ]);
         Kelas::create($credentials);
-        return redirect()->route('kelas.index');
+        return redirect()->route('kelas.index')->with('sukses', 'Data Berhasil Ditambahkan');
     }
 
     public function show(Kelas $kelas)
@@ -39,7 +39,10 @@ class KelasController extends Controller
     {
     }
 
-    public function destroy(Kelas $kelas)
+    public function destroy(Kelas $kelas, $id)
     {
+        Kelas::destroy($id);
+        return redirect()->route('kelas.index')->with('sukses', 'Data Berhasil Dihapus');
+
     }
 }
