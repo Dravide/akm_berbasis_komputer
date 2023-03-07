@@ -14,7 +14,7 @@ class SiswasController extends Controller
         $kelas = Kelas::select('id', 'nama_kelas')->count();
 
         return view('siswas.index', [
-            'siswas' => Siswa::all(),
+            'siswas' => Siswa::paginate(10),
             'kelas' => $kelas
         ]);
     }
@@ -45,7 +45,7 @@ class SiswasController extends Controller
         $user->password = bcrypt($credentials['password']);
         $user->save();
 
-        return redirect()->route('siswa.index');
+        return redirect()->route('siswa.index')->with('sukses', 'Data Berhasil Ditambahkan');
     }
 
     public function show(Siswa $siswa)
@@ -62,5 +62,22 @@ class SiswasController extends Controller
 
     public function destroy(Siswa $siswa)
     {
+        Siswa::destroy($siswa->id);
+        User::destroy($siswa->id);
+        return redirect()->route('siswa.index');
+    }
+
+    public function import()
+    {
+        return view('siswas.import');
+    }
+
+    public function cari(Request $request)
+    {
+        $cari = $request->cari;
+        $kelas = Kelas::select('id', 'nama_kelas')->count();
+        $siswas = Siswa::where('nama', 'like', "%" . $cari . "%")->paginate(10);
+        return view('siswas.index', ['siswas' => $siswas,
+            'kelas' => $kelas]);
     }
 }
